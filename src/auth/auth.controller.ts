@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto/auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { SignupDto } from './dto/signup.dto';
 import { PublicRoute } from './decorators/public.decorators';
 
 
@@ -9,13 +10,15 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   @PublicRoute()
   @Post('/signup')
-  signup(@Body() dto: AuthDto) {
+  signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
   }
 
   @PublicRoute()
   @Post('/login')
-  login(@Body() dto: AuthDto){
+  login(@Body() dto: LoginDto){
     return this.authService.login(dto);
   }
+
+  //TODO Password change
 }

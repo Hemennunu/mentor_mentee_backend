@@ -3,18 +3,25 @@ import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { BooksModule } from './books/books.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
-import { BorrowedBooksModule } from './borrowed_books/borrowed_books.module';
+// import { BorrowedBooksModule } from './borrowed_books/borrowed_books.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TasksModule } from './tasks/tasks.module'; 
+import { MentorshipRequestModule } from './mentorship-request/mentorship-request.module';
+import { MentorModule } from './mentor/mentor.module';
+import { MenteeModule } from './mentee/mentee.module';
 
 @Module({
   imports: [
     AuthModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/library_db'),
-    BooksModule,
-    BorrowedBooksModule,
+    MongooseModule.forRoot(process.env.MONGO_URI),
+
+    // BorrowedBooksModule,
+    TasksModule,
     JwtModule.register({ secret: process.env.JWT_SECRET }),
+    MentorshipRequestModule,
+    MentorModule,
+    MenteeModule,
   ],
   controllers: [],
   providers: [

@@ -6,6 +6,7 @@ import { UserSchema } from './schema/user.schema';
 import { JwtStrategy } from './strategies/jwt.startegy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TokenExtractionService } from './token.service';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     JwtModule.register({ secret: process.env.JWT_SECRET }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, TokenExtractionService],
   exports: [JwtModule],
 })
 export class AuthModule {}
