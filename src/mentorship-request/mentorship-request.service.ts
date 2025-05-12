@@ -58,15 +58,28 @@ export class MentorshipRequestService {
       .exec();
   }
 
-  async getAllRequestsSendByMentees(token: string): Promise<MentorshipRequest[]> {
+  async getAllRequestsSendByMentees(
+    token: string,
+  ): Promise<MentorshipRequest[]> {
     const userId = this.tokenService.extractUserId(token);
     const mentorObjectId = new Types.ObjectId(userId);
     const mentees = await this.mentorshipRequestModel
       .find({ mentorId: mentorObjectId })
       .exec();
-    
-    return mentees
-}
+
+    return mentees;
+  }
+  async getAllAcceptedRequestsSendByMentees(
+    token: string,
+  ): Promise<MentorshipRequest[]> {
+    const userId = this.tokenService.extractUserId(token);
+    const mentorObjectId = new Types.ObjectId(userId);
+    const mentees = await this.mentorshipRequestModel
+      .find({ mentorId: mentorObjectId,status: Status.ACCEPTED })
+      .exec();
+
+    return mentees;
+  }
 
   async getRequestById(id: string): Promise<MentorshipRequest | null> {
     return await this.mentorshipRequestModel.findById(id).exec();
@@ -87,5 +100,4 @@ export class MentorshipRequestService {
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();
   }
-
 }

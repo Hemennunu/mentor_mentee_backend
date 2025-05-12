@@ -25,26 +25,39 @@ export class MentorshipRequestController {
 
   @Post()
   @Roles(Role.MENTEE)
-  async create(@Body() dto: CreateMentorshipRequestDto, @Headers('authorization') authHeader:string): Promise<MentorshipRequest> {
+  async create(
+    @Body() dto: CreateMentorshipRequestDto,
+    @Headers('authorization') authHeader: string,
+  ): Promise<MentorshipRequest> {
     const token = authHeader.replace('Bearer ', '');
     return this.mentorshipRequestService.createMentorshipRequest(dto, token);
   }
 
   @Get()
   @Roles(Role.MENTEE)
-  async findAll(@Headers('authorization') authHeader:string): Promise<MentorshipRequest[]> {
+  async findAll(
+    @Headers('authorization') authHeader: string,
+  ): Promise<MentorshipRequest[]> {
     const token = authHeader.replace('Bearer ', '');
     return this.mentorshipRequestService.getAllRequests(token);
   }
 
-  
   @Get('/mentors/sent')
   @Roles(Role.MENTOR)
-  async findAllMentees(@Headers('authorization') authHeader:string): Promise<MentorshipRequest[]> {
+  async findAllMentees(
+    @Headers('authorization') authHeader: string,
+  ): Promise<MentorshipRequest[]> {
     const token = authHeader.replace('Bearer ', '');
     return this.mentorshipRequestService.getAllRequestsSendByMentees(token);
   }
-  
+  @Get('/mentees/accepted')
+  @Roles(Role.MENTOR)
+  async findAllAcceptedMentees(
+    @Headers('authorization') authHeader: string,
+  ): Promise<MentorshipRequest[]> {
+    const token = authHeader.replace('Bearer ', '');
+    return this.mentorshipRequestService.getAllAcceptedRequestsSendByMentees(token);
+  }
 
   @Get('/:id')
   @Roles(Role.MENTEE)
@@ -76,5 +89,4 @@ export class MentorshipRequestController {
     const { status } = updateStatusDto;
     return this.mentorshipRequestService.setRequestStatus(id, status);
   }
-
 }
